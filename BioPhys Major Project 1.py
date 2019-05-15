@@ -1,17 +1,27 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Comm 1
-β =
-γ =
-α = #1/r
-μ =
-p =
+# α ratio of people interacting with other communities: should be from 0.0-1.0: define as 1/r where r is distance from two communities
+# β risk of getting infected: if 1.0 100% of contractoin needs to be between 0.0-1.0
+# γ rate of recovery of infected person
+# μ death and birth rate
+# N population from data
 
-N =
-S =
-I =
-V = #are there those vaccinated before the diease starts
+#Comm 1
+β = .5
+γ = .5
+α = .5 #1/r
+μ = .5
+p = .5
+
+N = np.loadtxt('/Users/ross/Desktop/Code/PH591/CenPop2010_OR.txt', skiprows=1, delimiter=",", usecols=(2))
+lat = np.loadtxt('/Users/ross/Desktop/Code/PH591/CenPop2010_OR.txt', skiprows=1, delimiter=",", usecols=(5))
+long = np.loadtxt('/Users/ross/Desktop/Code/PH591/CenPop2010_OR.txt', skiprows=1, delimiter=",", usecols=(6))
+
+S = 10
+I = 1
+V = 10 #are there those vaccinated before the diease starts
+End = 1000
 
 dS = (1-p)*N*μ-μ*S-β*S*(I/N + α*I/N)
 dI = β*S*(I/N) - γ*(I/N)
