@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 # N population from data
 
 #Comm 1
-β = .5
-γ = .5
+β = .9
+γ = (1/7)
 α = .5 #1/r
 μ = .5
 p = .5
