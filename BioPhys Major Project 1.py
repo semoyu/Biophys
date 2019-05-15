@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 β = .9 #measels
 γ = (1/7) #recovery rate of measels
 α = .5 #1/r
-μ = (3.925*(10**-5)) #births per person per day
+μ = (3.425*(10**-5)) #births per person per day
 p = .5
 
 N = np.loadtxt('/Users/ross/Desktop/Code/PH591/CenPop2010_OR.txt', skiprows=1, delimiter=",", usecols=(2))
