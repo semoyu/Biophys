@@ -26,7 +26,7 @@ p = .5
 
 
 
-S = 10
+S1[0] = N[0] #S1[time index] = N[community index] 
 I = 1
 V = 10 #are there those vaccinated before the diease starts
 End = 1000
