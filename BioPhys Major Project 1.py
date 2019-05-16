@@ -24,32 +24,49 @@ long = np.loadtxt('/Users/ross/Desktop/Code/PH591/CenPop2010_OR.txt', skiprows=1
 μ = (3.425*(10**-5)) #births per person per day
 p = .5
 
+'''Selected Parameters'''
 RefCity = 0
+PreInfected = 0
+EndTime = 30 #Days
 
-dlon = (long[10] - long[RefCity])*np.pi/180
-dlat = (lat[10] - lat[RefCity])*np.pi/180
-a = (np.sin(dlat/2))**2 + np.cos(lat[RefCity]*np.pi/180) * np.cos(lat[10]*np.pi/180) * (np.sin(dlon/2))**2
-c = 2 * np.arctan2( np.sqrt(a), np.sqrt(1-a) )
-R = 6373
-d = R * c
-print(d)
-
-S1[0] = N[0] #S1[time index] = N[community index] 
-I = 1
-V = 10 #are there those vaccinated before the diease starts
-End = 1000
-
-dS = (1-p)*N*μ-μ*S-β*S*(I/N + α*I/N)
-dI = β*S*(I/N) - γ*(I/N)
-dR = γ*(I/N)-μ*γ
-dV = p*μ - μ*V
-
-S = N
-I = 0
-R = 0
-V = 0
-for t in range(0,End):
-    S += dS
-    I += dI
-    R += dR
-    V += dV
+'''Tourism'''
+#Rate at which people visit
+α = []
+for i in range(0,len(N)):
+    dlon = (long[i] - long[RefCity])*np.pi/180
+    dlat = (lat[i] - lat[RefCity])*np.pi/180
+    a = (np.sin(dlat/2))**2 + np.cos(lat[RefCity]*np.pi/180) * np.cos(lat[i]*np.pi/180) * (np.sin(dlon/2))**2
+    c = 2 * np.arctan2( np.sqrt(a), np.sqrt(1-a) )
+    R = 6373 #Radius of Earth
+    d = R * c
+    if i == RefCity:
+        α.append(1)
+    else:
+        α.append(1/d)
+#Number of Infected in other Cities
+ICity = []
+for i in range(0,len(N)):
+    ICity.append(PreInfected)
+#Number of Infected visiting the Reference City
+Sum = 0
+for i in range(0,len(N)):
+    Sum += α[i]*ICity[i]/N[i]
+#Creates arrays
+S = np.arange(0,EndTime)
+I = np.arange(0,EndTime)
+R = np.arange(0,EndTime)
+V = np.arange(0,EndTime)
+#Fills arrays over time
+for t in range(0,EndTime):
+    S[0] = N[RefCity]
+    I[0] = ICity[RefCity]
+    R[0] = 0
+    V[0] = 0
+    dS = (1-p)*N[RefCity]*μ-μ*S[t]-β*S[t]*(I[t]/N[RefCity] + Sum)
+    dI = β*S[t]*(I[t]/N[RefCity]) - γ*(I[t]/N[RefCity]) - μ*I[t]
+    dR = γ*(I[t]/N[RefCity])-μ*γ
+    dV = p*μ - μ*V[t]
+    S[t] += dS
+    I[t] += dI
+    R[t] += dR
+    V[t] += dV
