@@ -24,7 +24,15 @@ long = np.loadtxt('/Users/ross/Desktop/Code/PH591/CenPop2010_OR.txt', skiprows=1
 μ = (3.425*(10**-5)) #births per person per day
 p = .5
 
+RefCity = 0
 
+dlon = (long[10] - long[RefCity])*np.pi/180
+dlat = (lat[10] - lat[RefCity])*np.pi/180
+a = (np.sin(dlat/2))**2 + np.cos(lat[RefCity]*np.pi/180) * np.cos(lat[10]*np.pi/180) * (np.sin(dlon/2))**2
+c = 2 * np.arctan2( np.sqrt(a), np.sqrt(1-a) )
+R = 6373
+d = R * c
+print(d)
 
 S1[0] = N[0] #S1[time index] = N[community index] 
 I = 1
