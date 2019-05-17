@@ -27,8 +27,10 @@ p = .5
 '''Selected Parameters'''
 RefCity = 0
 PreInfected = 0
-EndTime = 30 #Days
+RCPreInfected = 10
+EndTime = 3650 #Days
 
+μ = (11.8 / 1000)/365
 '''Tourism'''
 #Rate at which people visit
 α = []
@@ -46,7 +48,10 @@ for i in range(0,len(N)):
 #Number of Infected in other Cities
 ICity = []
 for i in range(0,len(N)):
-    ICity.append(PreInfected)
+    if i == RefCity:
+        ICity.append(RCPreInfected)
+    else:
+        ICity.append(PreInfected)
 #Number of Infected visiting the Reference City
 Sum = 0
 for i in range(0,len(N)):
@@ -57,16 +62,24 @@ I = np.arange(0,EndTime)
 R = np.arange(0,EndTime)
 V = np.arange(0,EndTime)
 #Fills arrays over time
-for t in range(0,EndTime):
-    S[0] = N[RefCity]
+for t in range(0,EndTime-1):
+    S[0] = N[RefCity] - ICity[RefCity]
     I[0] = ICity[RefCity]
     R[0] = 0
     V[0] = 0
-    dS = (1-p)*N[RefCity]*μ-μ*S[t]-β*S[t]*(I[t]/N[RefCity] + Sum)
-    dI = β*S[t]*(I[t]/N[RefCity]) - γ*(I[t]/N[RefCity]) - μ*I[t]
-    dR = γ*(I[t]/N[RefCity])-μ*γ
-    dV = p*μ - μ*V[t]
-    S[t] += dS
-    I[t] += dI
-    R[t] += dR
-    V[t] += dV
+    dS = (1-p)*μ*N[RefCity]-μ*S[t]-β*S[t]*(I[t]/N[RefCity] + Sum)
+    dI = β*S[t]*(I[t]/N[RefCity]) - γ*I[t] - μ*I[t]
+    dR = γ*I[t]-μ*R[t]
+    dV = p*μ*N[RefCity] - μ*V[t]
+    S[t+1] = S[t] + dS
+    I[t+1] = I[t] + dI
+    R[t+1] = R[t] + dR
+    V[t+1] = V[t] + dV
+plt.plot(np.arange(0,EndTime), S ,label='Susceptible')
+plt.plot(np.arange(0,EndTime), I ,label='Infected')
+plt.plot(np.arange(0,EndTime), R ,label='Recovered')
+plt.plot(np.arange(0,EndTime), V ,label='Vaccinated')
+plt.legend(loc ='best')
+plt.xlabel('Time (Days)')
+plt.ylabel('Population')
+plt.show()
