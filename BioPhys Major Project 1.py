@@ -74,8 +74,8 @@ def SIRV(β, γ, p, RefCity, RCPreInfected, PreInfected, Prevaccinated, EndTime)
     plt.title('City: %i' %RefCity)
 
 '''SIRV(β, γ, p, RefCity, RCPreInfected, PreInfected, Prevaccinated, EndTime)'''
-SIRV(.4,1/100,.8,0,10,0,20,365)
-SIRV(.4,1/100,.8,0,10,0,0,365)
+SIRV(.5,1/100,.8,0,10,1,0,365)
+
 
 plt.show()
 
